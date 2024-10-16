@@ -25,14 +25,14 @@ namespace OnlineLibrarySystem.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/BorrowedBooks
+     
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BorrowedBooks>>> GetBorrowedBooks()
         {
             return await _context.BorrowedBooks.ToListAsync();
         }
 
-        // GET: api/BorrowedBooks/5
+     
         [HttpGet("{id}")]
         public async Task<ActionResult<BorrowedBooks>> GetBorrowedBooks(int id)
         {
@@ -46,8 +46,7 @@ namespace OnlineLibrarySystem.Controllers
             return borrowedBooks;
         }
 
-        // PUT: api/BorrowedBooks/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+      
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBorrowedBooks(int id, BorrowedBookDTO borrowedBooks)
         {
@@ -77,8 +76,7 @@ namespace OnlineLibrarySystem.Controllers
             return NoContent();
         }
 
-        // POST: api/BorrowedBooks
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+       
         [HttpPost("BorrowBook")]
         public async Task<ActionResult<BorrowedBooks>> PostBorrowedBooks(BorrowedBookDTO borrowedBooks)
         {
@@ -118,6 +116,22 @@ namespace OnlineLibrarySystem.Controllers
             return Ok(new {message = "thanks for returning the book ontime ."});
 
 
+        }
+
+        [HttpGet("BorrowedHistory")]
+        public async Task<ActionResult<IEnumerable<BorrowedBooks>>> GetHistoryBorrowedBooks()
+        {
+            return await _context.BorrowedBooks
+                        .Where(b => b.IsReturned == true)
+                        .ToListAsync();
+        }
+
+        [HttpPost("UserBorrowedBooks/{id}")]
+        public async Task<ActionResult<IEnumerable<BorrowedBooks>>> GetHistoryBorrowedBooksForUer(int id)
+        {
+            return await _context.BorrowedBooks
+                        .Where(b => b.IsReturned == true && b.BorrowerId == id)
+                        .ToListAsync();
         }
 
         // DELETE: api/BorrowedBooks/5
